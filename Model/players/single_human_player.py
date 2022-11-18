@@ -6,11 +6,11 @@ class SingleHumanPlayer(IPlayer):
         super().__init__(name)
         self.name = name
 
-    def playing(self,board,pos, move, game_board, winner, player_turn):
-        super().playing(board, pos, move, game_board, winner, player_turn)
+    def playing(self,board,x,y, move, game_board, winner, player_turn):
+        super().playing(board, x,y, move, game_board, winner, player_turn)
         sqSelected =()
         playerClick = []
-        x,y = game_board.get_mouse_coordinate(pos)
+       
         if move.is_movable_piece(x,y):
             sqSelected = (y,x)
             playerClick.append(sqSelected)
