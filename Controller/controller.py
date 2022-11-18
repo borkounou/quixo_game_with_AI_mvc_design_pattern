@@ -1,10 +1,9 @@
 
 import pygame
-import time
 
 class Controller:
 
-    def __init__(self, Game_board, Move, Winner,View,RandomPlayer):
+    def __init__(self, Game_board, Move, Winner,View,players):
         pygame.init()
         self.__game_board = Game_board
         self.__move = Move
@@ -17,7 +16,8 @@ class Controller:
         self.__playerClick = self.__game_board.player_click
         self.__running = self.__game_board.running
         self.__starting_game =  self.__game_board.start_game
-        self.random_player = RandomPlayer
+        self.players = players
+        
 
     def __restart_game(self):
         self.__game_board.reset_game()
@@ -129,7 +129,6 @@ class Controller:
 
     def main_loop_test(self):
         while self.__running:
- 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.__running =False
@@ -146,15 +145,18 @@ class Controller:
                 if event.type == pygame.MOUSEBUTTONDOWN and self.__starting_game==True:
                     pos = pygame.mouse.get_pos()
                     x,y = self.__game_board.get_mouse_coordinate(pos)
-                    # self.__play(x,y)
-                
                     self.__player_turn=self.__playing(x,y)
-                    
+                    # player3 = self.players.play('human')
+                    # self.__player_turn= player3.playing(self.__board, pos, self.__move, self.__game_board, self.__winner, self.__player_turn)
+                    print(self.__player_turn)
+                   
                     
                 
                 if self.__player_turn ==False:
+                    player2 = self.players.play("random")
+                    self.__player_turn = player2.playing(self.__board,pos,self.__move, self.__game_board, self.__winner,self.__player_turn)
                   
-                    self.__player_turn = self.random_player.playing(self.__board,self.__move, self.__game_board, self.__winner,self.__player_turn)
+                    # self.__player_turn = self.players.playing(self.__board,self.__move, self.__game_board, self.__winner,self.__player_turn)
                     
                     
     

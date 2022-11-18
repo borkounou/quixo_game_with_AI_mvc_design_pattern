@@ -18,7 +18,7 @@ class RandomPlayer(IPlayer):
         return x,y
 
     
-    def playing(self,board,move,game_board,winner,player_turn):
+    def playing(self,board,pos,move,game_board,winner,player_turn):
         super().playing(board,move,game_board,winner,player_turn)
         playerClick = []
         random = True

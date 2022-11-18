@@ -2,14 +2,13 @@
 import pygame 
 import os
 from constants import HEIGHT, WIDTH,BG_COLOR
-from .screen_factory import ScreenFactory
 from .welcome_screen import WelcomeScreen
 from .main_screen import MainScreen
 import pygame 
 from constants import HEIGHT, WIDTH, BG_COLOR
 dir_path = os.path.dirname(os.path.realpath(__file__))
+# Screen factory
 class View:
-
     def __init__(self):
         self.screen = pygame.display.set_mode((WIDTH,HEIGHT))
         self.clock = pygame.time.Clock()

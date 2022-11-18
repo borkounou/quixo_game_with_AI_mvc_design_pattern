@@ -15,7 +15,6 @@ class WelcomeScreen(IScreen):
         font = pygame.font.SysFont("Arial", 50)
         restart_button = font.render("Welcome to the QUIXO",1,pygame.Color("White"))
         tex_rect = restart_button.get_rect(center=(400,200))
-
         # screen.blit(self.__bagckground_image, self.bg_image_rect)
         pygame.draw.circle(screen, "Black", [WIDTH/2, HEIGHT/2], HEIGHT/2-20)
         X = SQ_SIZE + 1*IMAGE_SIZE
@@ -29,10 +28,5 @@ class WelcomeScreen(IScreen):
         screen.blit(self.__circle_img,circle_rect) 
 
     
-    # def font_style(self,screen, text, font,color="White",pos=(200,200)):
-    #     font = pygame.font.SysFont("Arial", font)
-    #     restart_button = font.render(text,1,pygame.Color(color))
-    #     tex_rect = restart_button.get_rect(center=(pos))
-    #     screen.blit(restart_button,tex_rect)
 
         
