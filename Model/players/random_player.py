@@ -1,7 +1,6 @@
 from .players import IPlayer
 import random
 
-
 class RandomPlayer(IPlayer):
     def __init__(self, name):
         super().__init__(name)

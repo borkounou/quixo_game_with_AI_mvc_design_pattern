@@ -12,7 +12,6 @@ from Model.players.random_player import RandomPlayer
 
 
 if __name__ =="__main__":
-
     game_board = Board()
     move = Move()
     winner = Winner()

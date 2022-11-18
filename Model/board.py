@@ -25,7 +25,7 @@ class Board:
 
     def next_turn(self, player_turn):
         return 1 if player_turn else -1
-
+        
     def start_player(self, x,y):
         position = [(1,2),(3,2)]
         if (x,y) in position:
@@ -33,7 +33,6 @@ class Board:
             if (x,y)==position[1]: self.cross_turn = False
            
         return self.cross_turn
-
 
 
     def get_mouse_coordinate(self, pos):
@@ -44,9 +43,6 @@ class Board:
         if y<0: y=0
         if y>4: y=4
         return x,y
-
-
-
 
     def get_possibles_destinations(self, pos_end):
         destinations = []
