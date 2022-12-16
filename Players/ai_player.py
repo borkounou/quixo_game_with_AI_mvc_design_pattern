@@ -24,7 +24,7 @@ class AIPlayer(IPlayer):
                 board = copy.deepcopy(board)
                 if board[move[0]] != 0:
                     continue
-                self.game_state.play2(board,move[0], move[1])
+                self.game_state.play2(board,move[0], move[1]) 
                 val = self.alphabeta(board, alpha, beta, depth)[0]
                 if (val > alpha):
                     alpha = val
@@ -52,15 +52,11 @@ class AIPlayer(IPlayer):
 
 
     def evaluate(self,board, depth,isTerminal):
-        # Maximizer won (O)
         if (isTerminal == self.game_state.O):  
-            # Less moves is better
             return 100 + depth  
-        # Minimizer Won (X)
         elif (isTerminal == self.game_state.X):  
-            # Less moves is better
             return -100 - depth  
-         # Compare owned piece counts if we reach tree depth limit
+
         else: 
             value = 0
             occValue = self.find_occurence(board,1) * 5
@@ -107,31 +103,17 @@ class AIPlayer(IPlayer):
     def playing(self,board):
         depth = 4
         move = self.alphabeta(board, -math.inf, math.inf, depth)[1]
-        # move = self.alphabeta(board, -1000, 1000, depth)
-        print(f"ai move and score are: {move}")
+        print(f"ai moves are: {move}")
         state =self.game_state.isGameEndFinal()
         if move!=None:
             self.game_state.move.move_tiles(board,move[0],move[1],self.game_state.O)
             self.game_state.player_turn = not self.game_state.player_turn
 
-
         else:
-            if state ==-1:
+            if state ==self.game_state.O:
                 print(f"Player ai winssssss")
-            elif state ==1:
+            elif state ==self.game_state.X:
                 print(f"Player human winssssss")
-
             else:
                 print("Draw none wins")
            
-
-
-   
-
-
-
-
-
-
-
-        
