@@ -32,9 +32,14 @@ class Controller:
                     human_player = self.player.play("human")
                     human_player.playing(x,y)
 
-                if self.model.player_turn == False:
-                    random_player = self.player.play("random")
-                    random_player.playing(self.model.board)
+                # if self.model.player_turn == False:
+                #     random_player = self.player.play("random")
+                #     random_player.playing(self.model.board)
+                
+                if self.model.player_turn ==False:
+                    ai_player = self.player.play("ai")
+                    ai_player.playing(self.model.board)
+                    
 
 
             if not self.model.start_game:

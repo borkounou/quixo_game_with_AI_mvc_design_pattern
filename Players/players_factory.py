@@ -1,6 +1,7 @@
 
 from .single_human import SingleHumanPlayer
 from .random_player import RandomPlayer 
+from .ai_player import AIPlayer
 # from ai_player import Ai
 class PlayersFactory:
     def __init__(self,game_board):
@@ -12,6 +13,10 @@ class PlayersFactory:
         
         if player_name=="human":
             return SingleHumanPlayer(player_name,self.game_board)
+
+        
+        if player_name=="ai":
+            return AIPlayer(player_name,self.game_board)
 
         # if player_name=="ai":
         #     #game_state,move,winner

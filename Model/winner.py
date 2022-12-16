@@ -57,7 +57,7 @@ class Winner:
                 return winner # 0, -1 or 1
         return winner # 0, -1 or 1
 
-    def winner_check(self,board,show=False):
+    def winner_check(self,board):
             '''
             @return 0 if there is  no win yet
             @return 1 if player 1 wins
@@ -66,14 +66,7 @@ class Winner:
             #Vertical wins
             for col in range(DIMENSION):
                 if board[0][col] == board[1][col] == board[2][col]== board[3][col]==board[4][col]:
-                    # SQ_SIZE + 1*IMAGE_SIZE,SQ_SIZE + 2*IMAGE_SIZE
-                    # iPos = (col * IMAGE_SIZE+SQ_SIZE + SQ_SIZE//2, 20)
-                    # fPos = (col * IMAGE_SIZE+SQ_SIZE + SQ_SIZE//2, HEIGHT-20)
-                    # print(iPos, fPos)
-                    # pygame.draw.line(screen, "black", iPos, fPos, 20)
 
-
-            
                     if board[0][col] == -1:
                         return - 1
                     if board[0][col] ==1:

@@ -29,7 +29,7 @@ IMAGES = {
     }
 
 
-PATH_BACKGROUND_IMAGE = "C:\\M2\\Software UE\\QUIXO_FINAL_MVC\\QUIXO-MASTER-GAME\\images\\bg2.jpg"
+PATH_BACKGROUND_IMAGE = "C:\\M2\\Software UE\\QUIXO_IA_FINAL\\QUIXO_IA_MASTER\\images\\bg2.jpg"
 
 
 

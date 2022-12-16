@@ -4,9 +4,9 @@ from constants import INDEX_LAST_COL,INDEX_LAST_ROW
 from .move import Move
 from .winner import Winner
 class Board:
-    X = 1
-    O = -1 
-    BLANK = 0
+    X = 1 # Human Player
+    O = -1 # AI player
+    BLANK = 0 # Empty no player
 
     def __init__(self, board=None, turn=1):
         if (board ==None):
@@ -32,6 +32,27 @@ class Board:
     def __create_board(self):
         return np.zeros((DIMENSION, DIMENSION), dtype=int)
 
+
+    def play(self,piece,move):
+        self.board[piece] = self.turn
+        self.move.move_tiles(self.board,piece,move,self.turn)
+        self.changeTurn()
+
+    def play2(self,board,piece,move):
+        board[piece] =self.turn
+        self.move.move_tiles(board,piece,move,self.turn)
+        self.changeTurn()
+
+
+    def get_possible_moves(self):
+        allMoves = []
+        for piece in self.movable:
+            moves = self.get_possibles_destinations(piece)
+            for move in moves:
+                allMoves.append((piece,move))
+        np.random.shuffle(allMoves)
+        return allMoves
+
     
     def gameOver(self):
         self.running = False
@@ -46,18 +67,34 @@ class Board:
     def isGameEnd(self):
         return all(self.board[index]!=0 for index in self.movable)
 
+    def isGameEndFinal(self):
+        firstDiagonal = np.diagonal(self.board)
+        secondDiagonal = np.diagonal(np.rot90(self.board))
+        if(np.all(firstDiagonal == self.X) or np.all(firstDiagonal == self.O)):
+            return self.board[0,0]
+        if(np.all(secondDiagonal == self.X) or np.all(secondDiagonal == self.O)):
+            return self.board[0,INDEX_LAST_ROW]
+        
+        for i in range(0,INDEX_LAST_ROW + 1):
+            row = self.board[i,:]
+            col = self.board[:,i]
+            if(np.all(row == self.X) or np.all(row == self.O)):
+                return self.board[i,0]
+            if(np.all(col == self.X) or np.all(col == self.O)):
+                return self.board[0,i]
+
+        return 0
+
     
     def reset_game(self):
         self.__init__()
     
-
     def start_player(self, x,y):
         position = [(1,2),(3,2)]
         if (x,y) in position:
-            if (x,y)==position[0]: self.turn=self.X#self.player_turn = True 
-            if (x,y)==position[1]: self.turn = self.O#self.player_turn = False
+            if (x,y)==position[0]: self.turn=self.X
+            if (x,y)==position[1]: self.turn = self.O
            
-        # return self.player_turn
 
     def get_mouse_coordinate(self, pos):
         x = int((pos[0]-SQ_SIZE)/IMAGE_SIZE)
@@ -106,4 +143,6 @@ class Board:
             destinations.append((x, opposite))
 
         return destinations
+
+
     
