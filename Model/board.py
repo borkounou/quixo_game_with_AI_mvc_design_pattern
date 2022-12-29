@@ -19,8 +19,9 @@ class Board:
         # move class
         self.move = Move()
         # Winner class 
+        self.ai_move = None
+        self.winner_state =None
         self.winner = Winner()
-
         self.player_turn = True
         self.sq_selected = ()
         self.player_click = []
@@ -33,10 +34,10 @@ class Board:
         return np.zeros((DIMENSION, DIMENSION), dtype=int)
 
 
-    def play(self,piece,move):
-        self.board[piece] = self.turn
-        self.move.move_tiles(self.board,piece,move,self.turn)
-        self.changeTurn()
+    # def play(self,piece,move):
+    #     self.board[piece] = self.turn
+    #     self.move.move_tiles(self.board,piece,move,self.turn)
+    #     self.changeTurn()
 
     def play2(self,board,piece,move):
         board[piece] =self.turn

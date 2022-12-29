@@ -10,43 +10,6 @@ class AIPlayer(IPlayer):
         self.name = name
         self.game_state = game
 
-    # def alphabeta(self,board,alpha,beta,depth):
-    #     isTerminal = self.game_state.isGameEndFinal()
-    #     if( isTerminal!=0 or depth ==0):
-    #         score = self.evaluate(board, depth, isTerminal)
-    #         return (score,None)
-
-    #     depth = depth -1 
-    #     bestMove = None 
-    #     if self.game_state.turn ==self.game_state.O:
-    #         for move in self.game_state.get_possible_moves():
-    #             board = copy.deepcopy(board)
-    #             if board[move[0]] != 0:
-    #                 continue
-    #             self.game_state.play2(board,move[0], move[1]) 
-    #             val = self.alphabeta(board, alpha, beta, depth)[0]
-    #             if (val > alpha):
-    #                 alpha = val
-    #                 bestMove = move
-    #             if (alpha >= beta):
-    #                 break
-    #         return (alpha, bestMove)
-
-    #     else:
-    #         for move in self.game_state.get_possible_moves():
-    #             board = copy.deepcopy(board)
-    #             if board[move[0]] != 0:
-    #                 continue
-    #             self.game_state.play2(board,move[0], move[1])
-    #             val = self.alphabeta(board, alpha, beta, depth)[0]
-    #             if (val < beta):
-    #                 beta = val
-    #                 bestMove = move
-    #             if (alpha >= beta):
-    #                 break
-            
-    #         return (beta, bestMove)
-
     def alphabeta(self, board, alpha, beta, depth):
         is_terminal = self.game_state.isGameEndFinal()
         if is_terminal != 0 or depth == 0:
@@ -136,18 +99,22 @@ class AIPlayer(IPlayer):
     def playing(self, board):
         depth = 3
         move = self.alphabeta(board, -math.inf, math.inf, depth)[1]
-        print(f"AI moves are: {move}")
 
         state = self.game_state.isGameEndFinal()
         if move is not None:
             self.game_state.move.move_tiles(board, move[0], move[1], self.game_state.O)
             self.game_state.player_turn = not self.game_state.player_turn
+            self.game_state.ai_move = move
+                
         else:
             if state == self.game_state.O:
-                print("AI wins")
+                pl = "AI wins"
+                self.game_state.winner_state =pl
+                print(self.game_state.winner_state)
             elif state == self.game_state.X:
-                print("Human wins")
+                self.game_state.winner_state ="Human wins"
+            elif self.game_state.isGameEnd():
+                self.game_state.winner_state = "Draw:no winner"
             else:
-                print("Draw")
-
-           
+                self.game_state.winner_state="AI's turn" if self.game_state.player_turn else "Human's turn"
+          

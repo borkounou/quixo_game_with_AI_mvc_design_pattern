@@ -10,6 +10,7 @@ class SingleHumanPlayer(IPlayer):
         if self.game_board.isGameEnd():
             self.game_board.reset_game()
             self.game_board.isGameEnd() is not self.game_board.isGameEnd()
+            self.game_board.winner_state = "Draw:no winner"
             print("The game is over: There is no winner")
         if self.game_board.move.is_movable_piece(x,y):
 
@@ -32,8 +33,20 @@ class SingleHumanPlayer(IPlayer):
                     self.game_board.move.move_tiles(self.game_board.board,self.game_board.player_click[0],
                     self.game_board.player_click[1],self.game_board.turn)
                     state =self.game_board.isGameEndFinal()
-                    if state ==self.game_board.turn:
-                        print(f"Player {self.game_board.turn} winssssss")
+                    # if state ==self.game_board.turn:
+                    #     print("Human wins")
+                    #     self.game_board.winner_state ="Human wins"
+                    # elif state !=self.game_board.turn and state!=0:
+                    #     print("AI wins")
+                    #     self.game_board.winner_state ="AI wins"
+                    # elif self.game_board.isGameEnd():
+                    #     print("Draw:no winner")
+                    #     self.game_board.winner_state = "Draw:no winner"
+                    #     print(self.game_board.winner_state)
+                    # else:
+                    #     print(f"It is AI turns")
+                    #     print(self.game_board.winner_state)
+
 
                     self.game_board.player_turn = not  self.game_board.player_turn
                     self.game_board.changeTurn()

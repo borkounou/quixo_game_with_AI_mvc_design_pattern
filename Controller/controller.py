@@ -13,7 +13,7 @@ class Controller:
 
     
     def run_game(self):
-
+        print(self.model.ai_move)
         pygame.init()
         while self.model.running:
             for event in pygame.event.get():
@@ -45,8 +45,13 @@ class Controller:
                 screen = self.view.build_screen("welcome_screen")
                 screen.draw_screen(self.view.screen)
             else:
+                screen = self.view.build_screen("game_screen")
+                screen.draw_screen(self.view.screen,self.model.ai_move,self.model.winner_state)
                 screen = self.view.build_screen("main_screen")
                 screen.draw_screen(self.view.screen, self.model.board)
+
+   
+
             
             pygame.display.update()
             self.view.clock.tick(30)

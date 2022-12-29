@@ -4,6 +4,7 @@ import os
 from constants import HEIGHT, WIDTH,BG_COLOR
 from .welcome_screen import WelcomeScreen
 from .main_screen import MainScreen
+from .game_screen import GameScreen
 import pygame 
 from constants import HEIGHT, WIDTH, BG_COLOR,PATH_BACKGROUND_IMAGE
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -27,6 +28,9 @@ class View:
 
         if screen_type == "main_screen":
             return  MainScreen()
+        
+        if screen_type == "game_screen":
+            return GameScreen()
         
         print("Invalid screen type")
         return None

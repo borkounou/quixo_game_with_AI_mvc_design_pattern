@@ -56,3 +56,5 @@ class MainScreenState:
   def update_game(self, controller):
     screen = controller.view.build_screen("main_screen")
     screen.draw_screen(controller.view.screen, controller.model.board)
+    screen = controller.view.build_screen("game_screen")
+    screen.draw_screen(controller.view.screen,controller.model.ai_move,controller.model.winner_state)
