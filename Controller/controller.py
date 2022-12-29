@@ -41,7 +41,6 @@ class Controller:
                     ai_player.playing(self.model.board)
                     
 
-
             if not self.model.start_game:
                 screen = self.view.build_screen("welcome_screen")
                 screen.draw_screen(self.view.screen)

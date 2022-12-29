@@ -26,11 +26,9 @@ class MainScreen(IScreen):
                     screen.blit(self.__blank_img,blank_rect) 
                     # pygame.draw.line(screen, "black", iPos, fPos, 10)
                    
-
                 if board[row][col] ==1:
                     cross_rect = self.__cross_img.get_rect(topleft=(X,Y))
                     screen.blit(self.__cross_img,cross_rect) 
-        
 
                 if board[row][col]==-1:
                     circle_rect = self.circle_img.get_rect(topleft=(X,Y))

@@ -31,6 +31,3 @@ IMAGES = {
 
 PATH_BACKGROUND_IMAGE = "C:\\M2\\Software UE\\QUIXO_IA_FINAL\\QUIXO_IA_MASTER\\images\\bg2.jpg"
 
-
-
-

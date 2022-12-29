@@ -10,110 +10,144 @@ class AIPlayer(IPlayer):
         self.name = name
         self.game_state = game
 
-    def alphabeta(self,board,alpha,beta,depth):
-        # isTerminal = self.game_state.winner.winner_check(board)
-        isTerminal = self.game_state.isGameEndFinal()
-        if( isTerminal!=0 or depth ==0):
-            score = self.evaluate(board, depth, isTerminal)
-            return (score,None)
+    # def alphabeta(self,board,alpha,beta,depth):
+    #     isTerminal = self.game_state.isGameEndFinal()
+    #     if( isTerminal!=0 or depth ==0):
+    #         score = self.evaluate(board, depth, isTerminal)
+    #         return (score,None)
 
-        depth = depth -1 
-        bestMove = None 
-        if self.game_state.turn ==self.game_state.O:
+    #     depth = depth -1 
+    #     bestMove = None 
+    #     if self.game_state.turn ==self.game_state.O:
+    #         for move in self.game_state.get_possible_moves():
+    #             board = copy.deepcopy(board)
+    #             if board[move[0]] != 0:
+    #                 continue
+    #             self.game_state.play2(board,move[0], move[1]) 
+    #             val = self.alphabeta(board, alpha, beta, depth)[0]
+    #             if (val > alpha):
+    #                 alpha = val
+    #                 bestMove = move
+    #             if (alpha >= beta):
+    #                 break
+    #         return (alpha, bestMove)
+
+    #     else:
+    #         for move in self.game_state.get_possible_moves():
+    #             board = copy.deepcopy(board)
+    #             if board[move[0]] != 0:
+    #                 continue
+    #             self.game_state.play2(board,move[0], move[1])
+    #             val = self.alphabeta(board, alpha, beta, depth)[0]
+    #             if (val < beta):
+    #                 beta = val
+    #                 bestMove = move
+    #             if (alpha >= beta):
+    #                 break
+            
+    #         return (beta, bestMove)
+
+    def alphabeta(self, board, alpha, beta, depth):
+        is_terminal = self.game_state.isGameEndFinal()
+        if is_terminal != 0 or depth == 0:
+            score = self.evaluate(board, depth, is_terminal)
+            return score, None
+
+        depth -= 1
+        best_move = None
+
+        if self.game_state.turn == self.game_state.O:
             for move in self.game_state.get_possible_moves():
                 board = copy.deepcopy(board)
                 if board[move[0]] != 0:
                     continue
-                self.game_state.play2(board,move[0], move[1]) 
-                val = self.alphabeta(board, alpha, beta, depth)[0]
-                if (val > alpha):
+                self.game_state.play2(board, move[0], move[1])
+                val, _ = self.alphabeta(board, alpha, beta, depth)
+                if val > alpha:
                     alpha = val
-                    bestMove = move
-                if (alpha >= beta):
+                    best_move = move
+                if alpha >= beta:
                     break
-            return (alpha, bestMove)
+            return alpha, best_move
 
         else:
             for move in self.game_state.get_possible_moves():
                 board = copy.deepcopy(board)
                 if board[move[0]] != 0:
                     continue
-                self.game_state.play2(board,move[0], move[1])
-                val = self.alphabeta(board, alpha, beta, depth)[0]
-                if (val < beta):
+                self.game_state.play2(board, move[0], move[1])
+                val, _ = self.alphabeta(board, alpha, beta, depth)
+                if val < beta:
                     beta = val
-                    bestMove = move
-                
-                if (alpha >= beta):
+                    best_move = move
+                if alpha >= beta:
                     break
-            
-            
-            return (beta, bestMove)
 
+            return beta, best_move
 
-    def evaluate(self,board, depth,isTerminal):
-        if (isTerminal == self.game_state.O):  
-            return 100 + depth  
-        elif (isTerminal == self.game_state.X):  
-            return -100 - depth  
+    
+    def evaluate(self, board, depth, isTerminal):
 
-        else: 
-            value = 0
-            occValue = self.find_occurence(board,1) * 5
+        value = 0
 
-            if(board[2,2] == self.game_state.O):
-                value = value + 20
-            elif(board[2,2] == self.game_state.X):
-                value = value - 20
+        if isTerminal == self.game_state.O:
+            value = 100 + depth
+        elif isTerminal == self.game_state.X:
+            value = -100 - depth
+        else:
+            occValue = self.find_occurrence(board, 1) * 5
+
+            if board[2, 2] == self.game_state.O:
+                value += 20
+            elif board[2, 2] == self.game_state.X:
+                value -= 20
             else:
                 occValue *= -1
 
             frequency = np.unique(board, return_counts=True)
-            uniqueCount = len(frequency[0])
-            if (uniqueCount == 3):  # Contains blank pieces
+            unique_count = len(frequency[0])
+            if unique_count == 3:
+                maximizer_piece_count = frequency[1][0]
+                minimizer_piece_count = frequency[1][1]
+            elif unique_count > 1:
+                maximizer_piece_count = frequency[1][0]
+                minimizer_piece_count = frequency[1][1]
 
-                maximizerPieceCount = frequency[1][0]
-                minimizerPieceCount = frequency[1][1]
-            elif (uniqueCount > 1):
-                maximizerPieceCount = frequency[1][0]
-                minimizerPieceCount = frequency[1][1]
+            value += maximizer_piece_count - minimizer_piece_count + occValue
 
-            value = value + (maximizerPieceCount - minimizerPieceCount) + occValue
-            return value
+        return value
 
-
-    def find_occurence(self,state, key):
-            occCount =0
-            for r in range(0,5):
-                row = state[r,:]
-                col = state[:,r]
-                y =np.where(row==key)[0]
-                z = np.where(col ==key)[0]
-                if(len(y)==4):
-                    ok = (y[-1]- y[0]==len(y)-1)
-                    if(ok):
-                        occCount+=1
-                if len(z) ==4:
-                    ok =(z[-1]- z[0]==len(z)-1)
-                    if ok:
-                        occCount+=1
-            return occCount
+    def find_occurrence(self, state, key):
+        occ_count = 0
+        for r in range(5):
+            row = state[r, :]
+            col = state[:, r]
+            y = np.where(row == key)[0]
+            z = np.where(col == key)[0]
+            if len(y) == 4:
+                if y[-1] - y[0] == len(y) - 1:
+                    occ_count += 1
+            if len(z) == 4:
+                if z[-1] - z[0] == len(z) - 1:
+                    occ_count += 1
+        return occ_count
 
     # Return the best move using alphabeta search
-    def playing(self,board):
-        depth = 4
+    def playing(self, board):
+        depth = 3
         move = self.alphabeta(board, -math.inf, math.inf, depth)[1]
-        print(f"ai moves are: {move}")
-        state =self.game_state.isGameEndFinal()
-        if move!=None:
-            self.game_state.move.move_tiles(board,move[0],move[1],self.game_state.O)
-            self.game_state.player_turn = not self.game_state.player_turn
+        print(f"AI moves are: {move}")
 
+        state = self.game_state.isGameEndFinal()
+        if move is not None:
+            self.game_state.move.move_tiles(board, move[0], move[1], self.game_state.O)
+            self.game_state.player_turn = not self.game_state.player_turn
         else:
-            if state ==self.game_state.O:
-                print(f"Player ai winssssss")
-            elif state ==self.game_state.X:
-                print(f"Player human winssssss")
+            if state == self.game_state.O:
+                print("AI wins")
+            elif state == self.game_state.X:
+                print("Human wins")
             else:
-                print("Draw none wins")
+                print("Draw")
+
            
