@@ -50,7 +50,7 @@ class MainScreenState:
       human_player = controller.player.play("human")
       human_player.playing(x, y)
     elif controller.model.player_turn == False:
-      ai_player = controller.player.play("ai")
+      ai_player = controller.player.play("random")
       ai_player.playing(controller.model.board)
 
   def update_game(self, controller):

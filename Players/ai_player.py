@@ -108,9 +108,7 @@ class AIPlayer(IPlayer):
                 
         else:
             if state == self.game_state.O:
-                pl = "AI wins"
-                self.game_state.winner_state =pl
-                print(self.game_state.winner_state)
+                self.game_state.winner_state = "AI wins"
             elif state == self.game_state.X:
                 self.game_state.winner_state ="Human wins"
             elif self.game_state.isGameEnd():
