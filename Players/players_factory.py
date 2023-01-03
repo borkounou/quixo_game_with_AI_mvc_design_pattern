@@ -18,11 +18,5 @@ class PlayersFactory:
         if player_name=="ai":
             return AIPlayer(player_name,self.game_board)
 
-        # if player_name=="ai":
-        #     #game_state,move,winner
-        #     return Ai("ai",self.game_board, self.move,self.winner)
-        if player_name =="pvp":
-            return 
-
         else:
             return None

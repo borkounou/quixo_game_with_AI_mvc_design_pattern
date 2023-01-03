@@ -3,19 +3,14 @@ from constants import DIMENSION, SQ_SIZE,IMAGE_SIZE
 from constants import INDEX_LAST_COL,INDEX_LAST_ROW
 from .move import Move
 from .winner import Winner
-class Board:
+class Game_State:
     X = 1 # Human Player
     O = -1 # AI player
     BLANK = 0 # Empty no player
 
     def __init__(self, board=None, turn=1):
-        if (board ==None):
-            self.board = self.__create_board()
-            self.turn = turn 
-        else:
-            self.board = board.board
-            self.turn = board.turn
-
+        self.board = self.__create_board() if board is None else board.board
+        self.turn = turn if board is not None else 1
         # move class
         self.move = Move()
         # Winner class 
@@ -29,21 +24,15 @@ class Board:
         self.start_game = False
         self.movable = self.move.get_movables_tiles(self.board)
 
-
+    # Create the board using numpy of zeros
     def __create_board(self):
         return np.zeros((DIMENSION, DIMENSION), dtype=int)
 
-
-    # def play(self,piece,move):
-    #     self.board[piece] = self.turn
-    #     self.move.move_tiles(self.board,piece,move,self.turn)
-    #     self.changeTurn()
-
-    def play2(self,board,piece,move):
+    # Play the game
+    def play(self,board,piece,move):
         board[piece] =self.turn
         self.move.move_tiles(board,piece,move,self.turn)
         self.changeTurn()
-
 
     def get_possible_moves(self):
         allMoves = []
@@ -68,24 +57,30 @@ class Board:
     def isGameEnd(self):
         return all(self.board[index]!=0 for index in self.movable)
 
+    
     def isGameEndFinal(self):
-        firstDiagonal = np.diagonal(self.board)
-        secondDiagonal = np.diagonal(np.rot90(self.board))
-        if(np.all(firstDiagonal == self.X) or np.all(firstDiagonal == self.O)):
-            return self.board[0,0]
-        if(np.all(secondDiagonal == self.X) or np.all(secondDiagonal == self.O)):
-            return self.board[0,INDEX_LAST_ROW]
-        
-        for i in range(0,INDEX_LAST_ROW + 1):
-            row = self.board[i,:]
-            col = self.board[:,i]
-            if(np.all(row == self.X) or np.all(row == self.O)):
-                return self.board[i,0]
-            if(np.all(col == self.X) or np.all(col == self.O)):
-                return self.board[0,i]
+
+        """Determine if the game has ended in a win or a draw.
+
+        Returns:
+        int: The value of the winning player (either self.X, self.O, or self.BLANK) if the game has ended in a win or a draw, or 0 otherwise.
+        """
+        first_diagonal = np.diagonal(self.board)
+        second_diagonal = np.diagonal(np.rot90(self.board))
+        if np.all(first_diagonal == self.X) or np.all(first_diagonal == self.O):
+            return self.board[0, 0]
+        if np.all(second_diagonal == self.X) or np.all(second_diagonal == self.O):
+            return self.board[0, INDEX_LAST_ROW]
+
+        for i in range(0, INDEX_LAST_ROW + 1):
+            row = self.board[i, :]
+            col = self.board[:, i]
+            if np.all(row == self.X) or np.all(row == self.O):
+                return self.board[i, 0]
+            if np.all(col == self.X) or np.all(col == self.O):
+                return self.board[0, i]
 
         return 0
-
     
     def reset_game(self):
         self.__init__()
@@ -106,7 +101,6 @@ class Board:
         if y>4: y=4
         return x,y
 
-    
 
     def final_state(self,board,turn):
 
@@ -123,11 +117,19 @@ class Board:
                 self.end = True
                 self.reset_game()
 
-
     def get_possibles_destinations(self, pos_end):
+        """Return a list of possible destinations for a given position.
+
+        Parameters:
+        pos_end (tuple): The position for which to find possible destinations.
+
+        Returns:
+        list: A list of tuples representing the possible destinations.
+        """
         destinations = []
-        (x,y) = pos_end
-        if x == 0 or x == INDEX_LAST_ROW:
+        (x, y) = pos_end
+
+        if x in (0, INDEX_LAST_ROW):
             if y != 0:
                 destinations.append((x, 0))
             if y != INDEX_LAST_COL:
@@ -135,7 +137,7 @@ class Board:
             opposite = 0 if x == INDEX_LAST_ROW else INDEX_LAST_ROW
             destinations.append((opposite, y))
 
-        if (y == 0 or y == INDEX_LAST_COL) and (x != 0 and x != INDEX_LAST_ROW):
+        if (y in (0, INDEX_LAST_COL)) and (x not in (0, INDEX_LAST_ROW)):
             if x != 0:
                 destinations.append((0, y))
             if x != INDEX_LAST_ROW:

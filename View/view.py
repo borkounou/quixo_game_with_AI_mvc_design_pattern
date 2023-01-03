@@ -8,6 +8,7 @@ from .game_screen import GameScreen
 import pygame 
 from constants import HEIGHT, WIDTH, BG_COLOR,PATH_BACKGROUND_IMAGE
 dir_path = os.path.dirname(os.path.realpath(__file__))
+
 # Screen factory
 class View:
     def __init__(self):
