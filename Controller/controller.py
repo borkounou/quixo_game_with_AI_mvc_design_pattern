@@ -66,7 +66,7 @@ class WelcomeScreenState:
         screen = controller.view.build_screen("welcome_screen")
         # Draw the screen
         screen.draw_screen(controller.view.screen)
-
+        
 
 class MainScreenState:
 

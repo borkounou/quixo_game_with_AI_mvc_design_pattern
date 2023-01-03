@@ -1,11 +1,8 @@
 from .players import IPlayer
 import random
-import time
-
 
 class RandomPlayer(IPlayer):
     def __init__(self, name,game_board):
-        # super().__init__(name,game_board)
         self.name = name
         self.game_board=game_board
         self.end = False
@@ -13,7 +10,6 @@ class RandomPlayer(IPlayer):
     def __rnd(self, list_to_select):
         idx = random.randrange(0, len(list_to_select))
         return list_to_select[idx]
-
 
     def __chooser(self):
         pos1 = self.__rnd(self.game_board.movable)

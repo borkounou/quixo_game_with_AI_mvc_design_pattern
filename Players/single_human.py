@@ -1,64 +1,61 @@
 from .players import IPlayer
 
 class SingleHumanPlayer(IPlayer):
-    def __init__(self, name,game_board):
-      
+    def __init__(self, name, game_board):
         self.name = name
         self.game_board = game_board
 
-    def playing(self,x,y):
+    def playing(self, x, y):
+        # Check if game is over and reset if necessary
         if self.game_board.isGameEnd():
             self.game_board.reset_game()
-            self.game_board.isGameEnd() is not self.game_board.isGameEnd()
-            self.game_board.winner_state = "Draw:no winner"
-            # print("The game is over: There is no winner")
-        if self.game_board.move.is_movable_piece(x,y):
+            # Double check that game is not over after reset
+            if self.game_board.isGameEnd():
+                self.game_board.winner_state = "Draw:no winner"
 
-            self.game_board.sq_selected = (y,x)
+        # Check if square is a movable piece
+        if self.game_board.move.is_movable_piece(x, y):
+            self.game_board.sq_selected = (y, x)
             self.game_board.player_click.append(self.game_board.sq_selected)
 
-            destination = self.game_board.get_possibles_destinations(self.game_board.player_click[0])
-            print(f"The possible destinations of the move {self.game_board.player_click[0]} are: {destination}")
-            if len(self.game_board.player_click) == 1 and self.game_board.move.is_movable_piece(x,y):
-                if self.game_board.board[y][x]!=0:
+            # Get possible destinations for piece
+            destinations = self.game_board.get_possibles_destinations(self.game_board.player_click[0])
+            print(f"The possible destinations of the move {self.game_board.player_click[0]} are: {destinations}")
+
+            # If this is the first player click, place a tile on the square if it is not already occupied
+            if len(self.game_board.player_click) == 1:
+                if self.game_board.board[y][x] != 0:
                     self.game_board.player_click.pop()
-                    print("You can't put a tile and same place")
-                    pass 
+                    print("You can't put a tile in the same place")
                 else:
                     self.game_board.board[y][x] = self.game_board.turn
-                    
-            if len(self.game_board.player_click) ==2:
 
-                if self.game_board.player_click[1] in destination:
-                    self.game_board.move.move_tiles(self.game_board.board,self.game_board.player_click[0],
-                    self.game_board.player_click[1],self.game_board.turn)
-                    state =self.game_board.isGameEndFinal()
-                    if state ==self.game_board.turn:
-                        # print("Human wins")
-                        self.game_board.winner_state ="Human wins"
-                    elif state !=self.game_board.turn and state!=0:
-                        # print("AI wins")
-                        self.game_board.winner_state ="AI wins"
+            # If this is the second player click, check if selected square is a valid destination
+            if len(self.game_board.player_click) == 2:
+                if self.game_board.player_click[1] in destinations:
+                    # Move piece to destination
+                    self.game_board.move.move_tiles(self.game_board.board, self.game_board.player_click[0],
+                                                    self.game_board.player_click[1], self.game_board.turn)
+                    # Check if game is over and update winner state
+                    state = self.game_board.isGameEndFinal()
+                    if state == self.game_board.turn:
+                        self.game_board.winner_state = "Human wins"
+                    elif state != self.game_board.turn and state != 0:
+                        self.game_board.winner_state = "AI wins"
                     elif self.game_board.isGameEnd():
-                        # print("Draw:no winner")
                         self.game_board.winner_state = "Draw:no winner"
                         print(self.game_board.winner_state)
                     else:
-                        # print(f"It is AI turns")
                         print(self.game_board.winner_state)
 
-
-                    self.game_board.player_turn = not  self.game_board.player_turn
+                    # Switch turns and reset player clicks
+                    self.game_board.player_turn = not self.game_board.player_turn
                     self.game_board.changeTurn()
-                    self.game_board.player_click=[]
-                  
-
+                    self.game_board.player_click = []
                 else:
-                    print(f"{self.game_board.player_click[1]} is not a place to put a tile")
-                    self.game_board.player_turn =  self.game_board.player_turn
+                    # If selected square is not a valid destination, remove it from player clicks and stay on same turn
+                    print(f"{self.game_board.player_click[1]} is not a valid destination")
+                    self.game_board.player_turn = self.game_board.player_turn
                     self.game_board.player_click.pop()
-                    pass
 
 
-
-    
