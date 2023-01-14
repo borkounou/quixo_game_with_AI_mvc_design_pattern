@@ -5,6 +5,7 @@ from constants import DIMENSION
 The objectif of this class is to implements the winning logic
 """
 class Winner:
+    
     def winner_check(self,board):
 
         '''

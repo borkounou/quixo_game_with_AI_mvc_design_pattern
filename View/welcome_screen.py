@@ -18,7 +18,7 @@ class WelcomeScreen(IScreen):
 
         # Text for instruction
         font_player = pygame.font.SysFont("Arial",20)
-        player_text = font_player.render("Choose one of the players as human player",1,pygame.Color("white"))
+        player_text = font_player.render("Choose the player X as human player",1,pygame.Color("white"))
         player_rect = player_text.get_rect(center=(400,250))
 
         # Draw a black circle

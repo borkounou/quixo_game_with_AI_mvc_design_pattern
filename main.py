@@ -1,11 +1,11 @@
 # Import the necessary classes
-from Model.board import Game_State
+from Model.board import GameState
 from View.view import View
 from Controller.controller import Controller
 
 def main():
     # Create the model, view, and controller
-    model = Game_State()
+    model = GameState()
     view = View()
     controller = Controller(model, view)
 

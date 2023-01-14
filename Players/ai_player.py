@@ -15,7 +15,7 @@ class AIPlayer(IPlayer):
         # Create a thread pool with 4 worker threads
         self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=4)
 
-    def alphabeta(self, board, alpha, beta, depth):
+    def __alphabeta(self, board, alpha, beta, depth):
         """Perform an alpha-beta search to find the best move.
 
         Parameters:
@@ -31,7 +31,7 @@ class AIPlayer(IPlayer):
         is_terminal = self.game_state.isGameEndFinal()
         if is_terminal != 0 or depth == 0:
             # Return the score and no best move for terminal states
-            score = self.evaluate(board, depth, is_terminal)
+            score = self.__evaluate(board, depth, is_terminal)
             return score, None
 
         # Decrement the depth for the next search
@@ -48,7 +48,7 @@ class AIPlayer(IPlayer):
                     continue
                 self.game_state.play(board, move[0], move[1])
                 # Submit the recursive call to the thread pool
-                future = self.executor.submit(self.alphabeta, board, alpha, beta, depth)
+                future = self.executor.submit(self.__alphabeta, board, alpha, beta, depth)
                 # Wait for the result and retrieve the value and best move
                 val, _ = future.result()
                 if val > alpha:
@@ -66,7 +66,7 @@ class AIPlayer(IPlayer):
                         continue
                     self.game_state.play(board, move[0], move[1])
                     # Submit the recursive call to the thread pool
-                    future = self.executor.submit(self.alphabeta, board, alpha, beta, depth)
+                    future = self.executor.submit(self.__alphabeta, board, alpha, beta, depth)
                     # Wait for the result and retrieve the value and best move
                     val, _ = future.result()
                     if val < beta:
@@ -78,7 +78,7 @@ class AIPlayer(IPlayer):
             return beta, best_move
 
 
-    def evaluate(self, board, depth, is_terminal):
+    def __evaluate(self, board, depth, is_terminal):
         # If X has won, return a score based on the depth
         if is_terminal == self.game_state.X:
             return 10 - depth
@@ -158,7 +158,7 @@ class AIPlayer(IPlayer):
         # Set the depth for the minimax algorithm
         depth = 3
         # Get the best move from the minimax algorithm
-        move = self.alphabeta(board, -math.inf, math.inf, depth)[1]
+        move = self.__alphabeta(board, -math.inf, math.inf, depth)[1]
         
         state = self.game_state.isGameEndFinal()
 

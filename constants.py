@@ -1,5 +1,7 @@
 import pygame 
 import os 
+__dir_path = os.path.dirname(os.path.realpath(__file__))
+
 WIDTH =800
 HEIGHT =800
 
@@ -13,7 +15,6 @@ IMAGE_SIZE = 100
 # Color section
 BG_COLOR =(0,46-0,63)
 
-__dir_path = os.path.dirname(os.path.realpath(__file__))
 
 # Images for the game
 IMAGES = {

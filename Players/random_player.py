@@ -4,7 +4,7 @@ import random
 class RandomPlayer(IPlayer):
     def __init__(self, name,game_board):
         self.name = name
-        self.game_board=game_board
+        self.__game_board=game_board
         self.end = False
 
     def __rnd(self, list_to_select):
@@ -12,7 +12,7 @@ class RandomPlayer(IPlayer):
         return list_to_select[idx]
 
     def __chooser(self):
-        pos1 = self.__rnd(self.game_board.movable)
+        pos1 = self.__rnd(self.__game_board.movable)
         x = pos1[0]
         y = pos1[1]
         return x,y
@@ -29,19 +29,19 @@ class RandomPlayer(IPlayer):
                 continue     
             if board[x][y]==0:
                 print(f"Choosen first option: {playerClick[0]}")
-                board[x][y] = self.game_board.turn
+                board[x][y] = self.__game_board.turn
                 # time.sleep(0.5)
-                destination = self.game_board.get_possibles_destinations((x,y))
+                destination = self.__game_board.get_possibles_destinations((x,y))
                 secondeDestination = self.__rnd(destination)
                 # time.sleep(wait)
                 playerClick.append(secondeDestination)
                 print(f"Destination to put the tile: {playerClick[1]}")
-                self.game_board.move.move_tiles(board,playerClick[0],playerClick[1],self.game_board.turn)
-                self.game_board.final_state(self.game_board.board, self.game_board.turn)
+                self.__game_board.move.move_tiles(board,playerClick[0],playerClick[1],self.__game_board.turn)
+                self.__game_board.final_state(self.__game_board.board, self.__game_board.turn)
 
                 playerClick=[]
-                self.game_board.player_turn = not self.game_board.player_turn
-                self.game_board.changeTurn()
+                self.__game_board.player_turn = not self.__game_board.player_turn
+                self.__game_board.changeTurn()
                 random =False
            
 

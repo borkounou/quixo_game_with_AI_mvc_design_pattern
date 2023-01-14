@@ -3,11 +3,18 @@ from constants import DIMENSION, SQ_SIZE,IMAGE_SIZE
 from constants import INDEX_LAST_COL,INDEX_LAST_ROW
 from .move import Move
 from .winner import Winner
-class Game_State:
+
+class GameState:
     X = 1 # Human Player
     O = -1 # AI player
     BLANK = 0 # Empty no player
+    _instance = None
 
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+        
     def __init__(self, board=None, turn=1):
         self.board = self.__create_board() if board is None else board.board
         self.turn = turn if board is not None else 1
@@ -26,6 +33,7 @@ class Game_State:
 
     # Create the board using numpy of zeros
     def __create_board(self):
+
         return np.zeros((DIMENSION, DIMENSION), dtype=int)
 
     # Play the game
